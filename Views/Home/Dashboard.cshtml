@@ -1,10 +1,31 @@
 @model UserAndWeddingConnectionViewModel;
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/dashboard">The Wedding Connection</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/newwedding">Create a Wedding</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-action="Logout" asp-controller="Home" method="POST">
+                    <button class="nav-link btn btn-link" type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
+        </div>
+</nav>
 <div class="container">
-    <form class="float-right" asp-action="Logout" asp-controller="Home" method="POST">
-        <button class="btn btn-link" type="submit">Logout</button>
-    </form>
-    <h1 class="display-4 text-center">Welcome to the Wedding Planner</h1>
-    <table class="table">
+    <h2 class="display-4 text-center">Welcome to the Wedding Planner</h2>
+
+    <img style="width: 40%; height: 30%; margin-bottom: 10px;" class="rounded mx-auto d-block" src="~/images/wedding.jpg" alt="image">
+    <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
                 <th>Wedding</th>

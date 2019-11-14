@@ -1,17 +1,29 @@
 @model Wedding;
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/dashboard">The Wedding Connection</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/newwedding">Create a Wedding</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-action="Logout" asp-controller="Home" method="POST">
+                    <button class="nav-link btn btn-link" type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
+        </div>
+</nav>
 <div class="container">
+    
 
-    <ul class="nav float-right">
-        <li class="nav-item">
-             <a style="margin-right: 10px;" class="nav-link active" href="/dashboard">Dashboard</a>
-        </li>
-        <li class="nav-item">
-            <form asp-action="Logout" asp-controller="Home" method="POST">
-                <button class="nav-link active btn btn-link" style="padding: 0px;" type="submit">Logout</button>
-            </form>
-        </li>
-
-    </ul>
        
         
     

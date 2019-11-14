@@ -1,18 +1,39 @@
 @model Wedding;
-<div class="container">
-    <div class="text-center">
-        <a style="margin-right: 10px;" class="d-inline" href="/dashboard">Dashboard</a>
-        <form class="d-inline" asp-action="Logout" asp-controller="Home" method="POST">
-            <button class="btn btn-link" type="submit">Logout</button>
-        </form>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/dashboard">The Wedding Connection</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/newwedding">Create a Wedding</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-action="Logout" asp-controller="Home" method="POST">
+                    <button class="nav-link btn btn-link" type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
     </div>
-    <h1 class="display-3">Dwight and Angela's Wedding</h1>
-    <h3>Date: @Model.Date</h3>
-    <h3>Guests:</h3>
-    <ul>
-        @foreach (WeddingConnection guest in Model.WeddingGuests)
-        {
-            <li>@guest.User.FirstName @guest.User.LastName</li>
-        }
-    </ul>
+</nav>
+<div class="container">
+    <div style="width:100%; font-family: Georgia, 'Times New Roman', Times, serif" class="card bg-dark text-white rounded mx-auto d-block">
+            <img src="~/images/pleasework.jpg" class="card-img" alt="...">
+            <div class="card-img-overlay" style="margin-top:27px;">
+              <h4 class="card-title">@Model.WedderOne and @Model.WeddingTwo</h4>
+              <p class="card-text">@Model.Date</p>
+              <h6>Guests:</h6>
+                    @foreach (WeddingConnection guest in Model.WeddingGuests)
+                    {
+                    <p>-@guest.User.FirstName @guest.User.LastName</p>
+                    }
+              
+            </div>
+          </div>
 </div>

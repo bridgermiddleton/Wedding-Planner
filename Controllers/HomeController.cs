@@ -73,19 +73,24 @@ namespace WeddingPlanner.Controllers
         [HttpGet("dashboard")]
         public IActionResult Dashboard()
         {
-            UserAndWeddingConnectionViewModel ViewModel = new UserAndWeddingConnectionViewModel()
+            if (HttpContext.Session.GetInt32("user_id") != null)
             {
-                AllWeddings = dbContext.Weddings.Include(w => w.WeddingGuests).ThenInclude(u => u.User).ToList(),
-                TheUser = dbContext.Users.Where(u => u.UserId == (int)HttpContext.Session.GetInt32("user_id")).Include(w => w.CreatedWeddings).ThenInclude(b => b.Wedding).FirstOrDefault(),
+                UserAndWeddingConnectionViewModel ViewModel = new UserAndWeddingConnectionViewModel()
+                {
+                    AllWeddings = dbContext.Weddings.Include(w => w.WeddingGuests).ThenInclude(u => u.User).ToList(),
+                    TheUser = dbContext.Users.Where(u => u.UserId == (int)HttpContext.Session.GetInt32("user_id")).Include(w => w.CreatedWeddings).ThenInclude(b => b.Wedding).FirstOrDefault(),
 
 
-            };
-            foreach (Wedding wedding in ViewModel.AllWeddings)
-            {
-                Console.WriteLine(wedding.WedderOne);
+                };
+                foreach (Wedding wedding in ViewModel.AllWeddings)
+                {
+                    Console.WriteLine(wedding.WedderOne);
+                }
+                
+                return View(ViewModel);
             }
+            return View("LoginAndRegPage");
             
-            return View(ViewModel);
         }
         [HttpPost]
         public IActionResult Logout()
@@ -96,16 +101,26 @@ namespace WeddingPlanner.Controllers
         [HttpGet("wedding/{weddingid}")]
         public IActionResult WeddingPage(int weddingid)
         {
+            if (HttpContext.Session.GetInt32("user_id") != null)
+            {
+                Wedding TheWedding = dbContext.Weddings.Where(w => w.WeddingId == weddingid).Include(u => u.WeddingGuests).ThenInclude(r => r.User).FirstOrDefault();
+                return View(TheWedding);
+            }
+            return View("LoginAndRegPage");
             
-            Wedding TheWedding = dbContext.Weddings.Where(w => w.WeddingId == weddingid).Include(u => u.WeddingGuests).ThenInclude(r => r.User).FirstOrDefault();
-            return View(TheWedding);
+            
 
             
         }
         [HttpGet("newwedding")]
         public IActionResult NewWeddingPage()
         {
-            return View();
+            if (HttpContext.Session.GetInt32("user_id") != null)
+            {
+                return View();
+            }
+            return View("LoginAndRegPage");
+            
         }
         [HttpPost]
         public IActionResult AddWedding(Wedding newWedding)
@@ -136,18 +151,28 @@ namespace WeddingPlanner.Controllers
         [HttpPost("delete/{weddingid}")]
         public IActionResult Delete(int weddingid)
         {
-            Wedding theWedding = dbContext.Weddings.Where(w => w.WeddingId == weddingid).Include(u => u.WeddingGuests).ThenInclude(b => b.User).FirstOrDefault();
-            dbContext.Weddings.Remove(theWedding);
-            dbContext.SaveChanges();
-            return RedirectToAction("Dashboard");
+            if (HttpContext.Session.GetInt32("user_id") != null)
+            {
+                Wedding theWedding = dbContext.Weddings.Where(w => w.WeddingId == weddingid).Include(u => u.WeddingGuests).ThenInclude(b => b.User).FirstOrDefault();
+                dbContext.Weddings.Remove(theWedding);
+                dbContext.SaveChanges();
+                return RedirectToAction("Dashboard");
+            }
+            return View("LoginAndRegPage");
+            
         }
         [HttpPost("unrsvp/{weddingconnectionid}")]
         public IActionResult UnRSVP(int weddingconnectionid)
         {
-            WeddingConnection theweddingconnection = dbContext.WeddingConnections.Where(w => w.WeddingConnectionId == weddingconnectionid).FirstOrDefault();
-            dbContext.WeddingConnections.Remove(theweddingconnection);
-            dbContext.SaveChanges();
-            return RedirectToAction("Dashboard");
+            if (HttpContext.Session.GetInt32("user_id") != null)
+            {
+                WeddingConnection theweddingconnection = dbContext.WeddingConnections.Where(w => w.WeddingConnectionId == weddingconnectionid).FirstOrDefault();
+                dbContext.WeddingConnections.Remove(theweddingconnection);
+                dbContext.SaveChanges();
+                return RedirectToAction("Dashboard");
+            }
+            return View("LoginAndRegPage");
+            
         }
 
 
