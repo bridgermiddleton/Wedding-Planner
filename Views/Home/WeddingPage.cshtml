@@ -1,0 +1,18 @@
+@model Wedding;
+<div class="container">
+    <div class="text-center">
+        <a style="margin-right: 10px;" class="d-inline" href="/dashboard">Dashboard</a>
+        <form class="d-inline" asp-action="Logout" asp-controller="Home" method="POST">
+            <button class="btn btn-link" type="submit">Logout</button>
+        </form>
+    </div>
+    <h1 class="display-3">Dwight and Angela's Wedding</h1>
+    <h3>Date: @Model.Date</h3>
+    <h3>Guests:</h3>
+    <ul>
+        @foreach (WeddingConnection guest in Model.WeddingGuests)
+        {
+            <li>@guest.User.FirstName @guest.User.LastName</li>
+        }
+    </ul>
+</div>

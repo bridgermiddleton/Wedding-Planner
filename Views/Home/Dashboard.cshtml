@@ -1,0 +1,88 @@
+@model UserAndWeddingConnectionViewModel;
+<div class="container">
+    <form class="float-right" asp-action="Logout" asp-controller="Home" method="POST">
+        <button class="btn btn-link" type="submit">Logout</button>
+    </form>
+    <h1 class="display-4 text-center">Welcome to the Wedding Planner</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Wedding</th>
+                <th>Date</th>
+                <th>Guests</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+        <tbody>
+                @{
+
+            
+                    foreach (Wedding wedding in Model.AllWeddings)
+                    {
+                        if (wedding.UserId == Model.TheUser.UserId)
+                            {   
+                            <tr>
+                                    <td><a href="/wedding/@wedding.WeddingId">@wedding.WedderOne & @wedding.WeddingTwo</a></td>
+                                    <td>@wedding.Date</td>
+                                    <td>@wedding.WeddingGuests.Count</td>
+                                    <td>
+                                        <form action="/delete/@wedding.WeddingId" method="POST">
+                                            <button class="btn btn-link" type="submit">Delete</button>
+                                        </form>
+                                    </td>   
+                                </tr>
+                                
+        
+                            }
+                            else
+                            {
+                                if (wedding.WeddingGuests.Count != 0)
+                                {
+                                    foreach (WeddingConnection weddingconnection in wedding.WeddingGuests)
+                                    {
+                            
+                                        if (weddingconnection.UserId == Model.TheUser.UserId)
+                                        {
+                                            <tr>
+                                                <td><a href="/wedding/@wedding.WeddingId">@wedding.WedderOne & @wedding.WeddingTwo</a></td>
+                                                <td>@wedding.Date</td>
+                                                <td>@wedding.WeddingGuests.Count</td>
+                                                <td>
+                                                    <form action="/unrsvp/@weddingconnection.WeddingConnectionId" method="POST">
+                                                        <button class="btn btn-link" type="submit">Un-RSVP</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                    
+                                            
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                            <td><a href="/wedding/@wedding.WeddingId">@wedding.WedderOne & @wedding.WeddingTwo</a></td>
+                                            <td>@wedding.Date</td>
+                                            <td>@wedding.WeddingGuests.Count</td>
+                                            <td>
+                                                <form asp-action="RSVP" asp-controller="Home" method="POST">
+                                                    <input type="hidden" asp-for="NewWeddingConnection.WeddingId" value="@wedding.WeddingId">
+                                                    <input type="hidden" asp-for="NewWeddingConnection.UserId" value="@Model.TheUser.UserId">
+                                                    <button class="btn btn-link" type="submit">RSVP</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                }
+                            }
+                        }
+                    }
+
+                                
+        
+                
+        </tbody>
+    </table>
+    <a class="float-right btn btn-primary" href="/newwedding">New Wedding</a>
+
+</div>

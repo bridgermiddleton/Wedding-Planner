@@ -1,0 +1,30 @@
+@model Wedding;
+<div class="container">
+
+    <ul class="nav float-right">
+        <li class="nav-item">
+             <a style="margin-right: 10px;" class="nav-link active" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <form asp-action="Logout" asp-controller="Home" method="POST">
+                <button class="nav-link active btn btn-link" style="padding: 0px;" type="submit">Logout</button>
+            </form>
+        </li>
+
+    </ul>
+       
+        
+    
+    <h2>Plan Your Wedding</h2>
+    <form class="form-group" asp-action="AddWedding" asp-controller="Home" method="POST">
+        <span asp-validation-for="WedderOne"></span>
+        Wedder One: <input class="form-control" asp-for="WedderOne">
+        <span asp-validation-for="WeddingTwo"></span>
+        Wedder Two: <input class="form-control" asp-for="WeddingTwo">
+        <span asp-validation-for="Date"></span>
+        Date: <input class="form-control" asp-for="Date">
+        <span asp-validation-for="Address"></span>
+        Address: <input class="form-control" asp-for="Address">
+        <button style="margin-top: 20px;" class="btn btn-success" type="submit">Create</button>
+    </form>
+</div>
