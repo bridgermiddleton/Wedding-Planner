@@ -1,12 +1,13 @@
 @model UserAndWeddingConnectionViewModel;
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/dashboard">The Wedding Connection</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <a class="navbar-brand" href="/dashboard">The Wedding Connection</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
             </li>
@@ -19,12 +20,13 @@
                 </form>
             </li>
         </ul>
-        </div>
+    </div>
 </nav>
 <div class="container">
     <h2 class="display-4 text-center">Welcome to the Wedding Planner</h2>
 
-    <img style="width: 40%; height: 30%; margin-bottom: 10px;" class="rounded mx-auto d-block" src="~/images/wedding.jpg" alt="image">
+    <img style="width: 40%; height: 30%; margin-bottom: 10px;" class="rounded mx-auto d-block"
+        src="~/images/wedding.jpg" alt="image">
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -36,72 +38,53 @@
 
         </thead>
         <tbody>
-                @{
-
-            
-                    foreach (Wedding wedding in Model.AllWeddings)
-                    {
-                        if (wedding.UserId == Model.TheUser.UserId)
-                            {   
-                            <tr>
-                                    <td><a href="/wedding/@wedding.WeddingId">@wedding.WedderOne & @wedding.WeddingTwo</a></td>
-                                    <td>@wedding.Date</td>
-                                    <td>@wedding.WeddingGuests.Count</td>
-                                    <td>
-                                        <form action="/delete/@wedding.WeddingId" method="POST">
-                                            <button class="btn btn-link" type="submit">Delete</button>
-                                        </form>
-                                    </td>   
-                                </tr>
-                                
-        
-                            }
-                            else
-                            {
-                                if (wedding.WeddingGuests.Count != 0)
-                                {
-                                    foreach (WeddingConnection weddingconnection in wedding.WeddingGuests)
-                                    {
-                            
-                                        if (weddingconnection.UserId == Model.TheUser.UserId)
-                                        {
-                                            <tr>
-                                                <td><a href="/wedding/@wedding.WeddingId">@wedding.WedderOne & @wedding.WeddingTwo</a></td>
-                                                <td>@wedding.Date</td>
-                                                <td>@wedding.WeddingGuests.Count</td>
-                                                <td>
-                                                    <form action="/unrsvp/@weddingconnection.WeddingConnectionId" method="POST">
-                                                        <button class="btn btn-link" type="submit">Un-RSVP</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                    
-                                            
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                            <td><a href="/wedding/@wedding.WeddingId">@wedding.WedderOne & @wedding.WeddingTwo</a></td>
-                                            <td>@wedding.Date</td>
-                                            <td>@wedding.WeddingGuests.Count</td>
-                                            <td>
-                                                <form asp-action="RSVP" asp-controller="Home" method="POST">
-                                                    <input type="hidden" asp-for="NewWeddingConnection.WeddingId" value="@wedding.WeddingId">
-                                                    <input type="hidden" asp-for="NewWeddingConnection.UserId" value="@Model.TheUser.UserId">
-                                                    <button class="btn btn-link" type="submit">RSVP</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                }
-                            }
-                        }
-                    }
-
-                                
-        
+            @{
+            foreach (Wedding wedding in Model.AllWeddings)
+            {
+            <tr>
+                <td><a href="/wedding/@wedding.WeddingId">@wedding.WedderOne & @wedding.WeddingTwo</a></td>
+                <td>@wedding.Date.ToString("MMM. dd, yyyy")</td>
+                <td>@wedding.WeddingGuests.Count</td>
                 
+                    
+                        @if (wedding.UserId == Model.TheUser.UserId)
+                        {
+                            <td>
+                                <form action="/delete/@wedding.WeddingId" method="POST">
+                                        <button class="btn btn-link" type="submit">Delete</button>
+                                    </form>
+                                </td> 
+                          
+
+                        }
+
+                        else if (wedding.WeddingGuests.All(r => r.UserId != @Model.TheUser.UserId))
+                        {
+                            <td>
+                                    <form asp-action="RSVP" asp-controller="Home" method="POST">
+                                        <input type="hidden" asp-for="NewWeddingConnection.WeddingId" value="@wedding.WeddingId">
+                                        <input type="hidden" asp-for="NewWeddingConnection.UserId" value="@Model.TheUser.UserId">
+                                        <button class="btn btn-link" type="submit">RSVP</button>
+                                    </form>
+                                </td>
+                            
+                        }
+                        else
+                        {
+                            <td>
+                                <form action="/unrsvp/@wedding.WeddingId" method="POST">
+                                    <button class="btn btn-link" type="submit">Un-RSVP</button>
+                                 </form>
+                             </td>
+                        
+                        }
+                       </tr>  
+                    }
+                   
+                }
+            
+
+
         </tbody>
     </table>
     <a class="float-right btn btn-primary" href="/newwedding">New Wedding</a>

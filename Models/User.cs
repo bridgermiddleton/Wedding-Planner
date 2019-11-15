@@ -16,10 +16,12 @@ namespace WeddingPlanner.Models
         public string Email{get;set;}
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(8)]
         public string Password{get;set;}
         [NotMapped]
         [DataType(DataType.Password)]
         [Compare("Password")]
+
         public string Confirm{get;set;}
         public List<WeddingConnection> CreatedWeddings {get;set;}
 

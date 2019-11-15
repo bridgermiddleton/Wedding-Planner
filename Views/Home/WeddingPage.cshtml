@@ -27,7 +27,7 @@
             <img src="~/images/pleasework.jpg" class="card-img" alt="...">
             <div class="card-img-overlay" style="margin-top:27px;">
               <h4 class="card-title">@Model.WedderOne and @Model.WeddingTwo</h4>
-              <p class="card-text">@Model.Date</p>
+              <p class="card-text">@Model.Date.ToString("MMM. dd, yyyy")</p>
               <h6>Guests:</h6>
                     @foreach (WeddingConnection guest in Model.WeddingGuests)
                     {

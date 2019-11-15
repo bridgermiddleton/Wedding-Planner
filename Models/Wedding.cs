@@ -17,6 +17,7 @@ namespace WeddingPlanner.Models
         public DateTime Date{get;set;}
         [Required]
         public string Address{get;set;}
+        [Required]
         public int UserId{get;set;}
         public List<WeddingConnection> WeddingGuests{get;set;}
     }

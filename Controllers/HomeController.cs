@@ -127,6 +127,11 @@ namespace WeddingPlanner.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (newWedding.Date < DateTime.Now)
+                {
+                    ModelState.AddModelError("Date", "Date must be in the future.");
+                    return View("NewWeddingPage");
+                }
                 newWedding.UserId = (int)HttpContext.Session.GetInt32("user_id");
                 dbContext.Add(newWedding);
                 dbContext.SaveChanges();
@@ -161,12 +166,12 @@ namespace WeddingPlanner.Controllers
             return View("LoginAndRegPage");
             
         }
-        [HttpPost("unrsvp/{weddingconnectionid}")]
-        public IActionResult UnRSVP(int weddingconnectionid)
+        [HttpPost("unrsvp/{weddingid}")]
+        public IActionResult UnRSVP(int weddingid)
         {
             if (HttpContext.Session.GetInt32("user_id") != null)
             {
-                WeddingConnection theweddingconnection = dbContext.WeddingConnections.Where(w => w.WeddingConnectionId == weddingconnectionid).FirstOrDefault();
+                WeddingConnection theweddingconnection = dbContext.WeddingConnections.Where(w => w.WeddingId == weddingid && w.UserId == (int)HttpContext.Session.GetInt32("user_id")).FirstOrDefault();
                 dbContext.WeddingConnections.Remove(theweddingconnection);
                 dbContext.SaveChanges();
                 return RedirectToAction("Dashboard");
